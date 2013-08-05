@@ -1,0 +1,23 @@
+#!/bin/sh
+
+FROM=~/"Music/iTunes/iTunes Media/Podcasts"
+TO="/Volumes/Internal SD/Podcasts"
+DAYS=5
+
+echo "Removing files over $DAYS days from device"
+find "$TO" -mtime +5 -type f | while read f
+do
+  rm "$f"
+done
+
+echo "Syncing files under $DAYS days to device"
+find "$FROM" -type f -mtime -5 | while read f
+do
+  if [ ! -f "$TO/`basename $f`" ]
+  then
+    echo "Copying $f"
+    rsync --size-only "$f" "$TO"
+  fi
+done
+
+echo "Done!"

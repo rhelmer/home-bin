@@ -1,0 +1,37 @@
+#!/bin/bash
+
+MNT="/Volumes/NO NAME/music"
+# TODO
+EXTENSIONS="m4a m4p"
+
+convert() {
+  ext=$1
+  if [ -z "$ext" ]
+  then
+    echo "Syntax: convert <extension>"
+    return 1
+  fi
+  find "$MNT" -type f -name "*.${ext}" | while read infile
+  do
+    infname=$(basename "$infile" .${ext})
+    outfile="$(dirname "$infile")/${infname}.mp3"
+    
+    ffmpeg -v quiet -y -i "$infile" "$outfile" < /dev/null
+    if [ $? != 0 ]
+    then
+      echo "ffmpeg exited non-zero - will not remove $infile"
+    else
+      rm "$infile"
+      echo "$infname converted"
+    fi
+  done
+}
+
+for ext in $EXTENSIONS
+do
+  convert "$ext"
+done
+
+echo "Searching for leftovers..."
+left=$(find /Volumes/NO\ NAME/music/ -not -iname "*.mp3" -type f | wc -l)
+echo "$left found"

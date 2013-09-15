@@ -1,7 +1,7 @@
 #!/bin/sh
 
-FROM=~/"Music/iTunes/iTunes Media/Podcasts"
-TO="/Volumes/Internal SD/Podcasts"
+FROM=~/"Music/iTunes/iTunes Media/Podcasts/"
+TO="/Volumes/RHELMER-B2G/Podcasts/"
 DAYS=5
 
 echo "Removing files over $DAYS days from device"

@@ -1,0 +1,16 @@
+#!/bin/bash
+ 
+export LEEROY_URL="https://leeroybot.herokuapp.com/"
+LEEROY_RERUN="https://raw.github.com/lonnen/leeroy-rerun/master/leeroy-rerun.py"
+ 
+# Usage
+[[ -z $1 ]] || [[ -z $2 ]] && {
+echo "Rerun a Leeroy job for a Mozilla project."
+echo -e " $ $(basename $0) PROJECT PULLNUM"
+exit 1
+}
+ 
+PROJECT=$1
+PULL=$2
+ 
+python2 <(curl -s $LEEROY_RERUN) "https://github.com/mozilla/${PROJECT}/pull/${PULL}"
